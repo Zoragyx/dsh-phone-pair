@@ -1,0 +1,20 @@
+# dsh-phone-pair-kit
+#
+# Turns this computer into a pairable DSH host for the DSH phone app.
+#
+# The pairing endpoints (/pair-accept, /pair-app, the device credential) come from
+# @linxin666/dsh-remote-web-ui, which this kit depends on and inserts below. The two settings are
+# the ones the phone flow needs:
+#   autoTunnel: true  - start a Cloudflare quick tunnel on boot, no account or domain required
+#   relay: true       - register the tunnel under a stable https://<id>.dsh-market.com address, so
+#                       the phone keeps working after a restart without re-scanning anything
+#
+# If this profile already configures remote-web-ui (for example a hand-written entry in
+# ~/.dsh/profiles/<profile>/cordis.patch.yml), delete that entry first: two entries for the same
+# plugin id make the loader fail.
+- insert:
+    - id: remote-web-ui
+      name: '@linxin666/dsh-remote-web-ui'
+      config:
+        autoTunnel: true
+        relay: true
