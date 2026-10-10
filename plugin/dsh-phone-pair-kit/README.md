@@ -2,6 +2,11 @@
 
 让**这台电脑**变成可被手机配对的 DSH 主机 —— 也就是 `DSH 手机版 · 配对版` App 的服务端那一半。
 
+> **灵感来源与致谢**：本套件只做「插入一段配置、把开关打开」这一件事；配对思路与配对服务端来自上游开源插件
+> [`@linxin666/dsh-remote-web-ui`](https://www.npmjs.com/package/@linxin666/dsh-remote-web-ui)
+> （作者 **linxin666**，源码仓库 <https://github.com/zhu1090093659/dsh-web>，许可 **Apache-2.0**）。感谢原作者；
+> 本项目与该作者没有隶属关系，若有任何不妥会立即调整。完整的第三方清单见仓库根目录的 `NOTICE.md`。
+
 装上它之后，电脑会自己开一条 Cloudflare 隧道，并把这条隧道登记成一个**固定域名**
 `https://<id>.dsh-market.com`；手机只要配对一次，之后无论在家里还是在外面都能连回来，不用重新扫码。
 
@@ -31,6 +36,15 @@ Copy-Item . "$profile\node_modules\dsh-phone-pair-kit" -Recurse -Force
 
 把 `dsh-phone-pair-kit` 发布到 DSH 插件市场后，别人在设置 → 插件里点一下即可。
 发布需要你自己的市场账号，本仓库不代替你发布。
+
+**C. 从 GitHub 装**
+
+```powershell
+# 需要本机装了 git —— pnpm 会用 git ls-remote 去问默认分支；
+# 没装 git 会报 "'git' 不是内部或外部命令"，那就用 A 方式：
+# 在仓库页面点 Code → Download ZIP，解压后把路径指向 plugin\dsh-phone-pair-kit
+pnpm add github:Zoragyx/dsh-phone-pair#path:plugin/dsh-phone-pair-kit
+```
 
 装完打开 **设置 → 远程访问**：面板会显示固定域名和二维码/配对链接。
 如果面板提示「当前服务仅绑定在 127.0.0.1 且未配置公网地址」，说明隧道还没起来，看下面「排错」。
