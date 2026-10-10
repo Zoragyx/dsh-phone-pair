@@ -127,3 +127,20 @@ python tools\audit_pair_build.py --apk artifacts\dsh-phone-pair-1.0.apk --device
   在那台机器上装插件、生成它自己的配对链接，手机重新配对到它。当前这套部署没有这一步。
 - 想让电脑「看起来关着但服务还在」：请用睡眠而不是关机，并且不要关显示器——但睡眠同样会断开
   隧道，所以最稳的是保持开机 + 关闭自动睡眠/自动休眠。
+
+---
+
+## 七、灵感来源、致谢与声明
+
+- 这个 App 的**灵感与配对思路**来自开源插件
+  [`@linxin666/dsh-remote-web-ui`](https://www.npmjs.com/package/@linxin666/dsh-remote-web-ui)（作者 **linxin666**，
+  源码仓库 <https://github.com/zhu1090093659/dsh-web>，Apache-2.0）：`dsh_pair` Cookie、`/pair-app` 界面壳、
+  `/pair-accept?pair=<code>` 的一次性令牌交换、固定域名中继 `<id>.dsh-market.com` 都出自它。
+  **在此思路上，手机端 App 是本项目独立实现的**：安卓 WebView 外壳、本机密码锁屏、离线优先缓存、
+  把约 28 MB 前端资源打进包内、以及从配对链接**运行期学习主机**（所以安装包里没有你的任何地址或凭据）。
+  **感谢原作者 linxin666** —— 也说明本项目与上游作者没有隶属关系、未声称获得其背书；若有任何不妥，告知即改。
+- App 里内置的前端资源来自 **DSH 自己的 Web 界面**（构建时从你的电脑抓取），版权归 DSH 作者。
+- 插件的骨架写法参考了 [`dsh-orb`](https://github.com/mini-yifan/dsh-orb-cordis)（作者 **mini-yifan**，MIT），谨致谢意。
+- 各组件许可与完整清单见仓库里的 `NOTICE.md`。
+- 再次提醒：**配对成功的手机 = 你电脑的完全控制凭据**。只配对自己的手机；手机丢了就在电脑的
+  「远程访问」面板撤销那台设备，或在 App 里「复位本机」。
