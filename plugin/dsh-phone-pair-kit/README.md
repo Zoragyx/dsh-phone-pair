@@ -1,5 +1,13 @@
 # dsh-phone-pair-kit
 
+![DSH 手机版 · 配对版](icon.png)
+
+> ### ⚠️ 先装手机端 App，否则这个插件没法用
+>
+> 本套件只是**电脑那一半**。手机那一半是一个单独的 Android App，请先下载安装：
+> **[Releases → DSH-Phone-Pair-1.0.1.apk](https://github.com/Zoragyx/dsh-phone-pair/releases/latest)**
+> （包名 `com.dsh.phone.pair`）。只装电脑端、没有手机端，是**没有任何东西可以配对的**。
+
 让**这台电脑**变成可被手机配对的 DSH 主机 —— 也就是 `DSH 手机版 · 配对版` App 的服务端那一半。
 
 > **灵感来源与致谢**：本套件只做「插入一段配置、把开关打开」这一件事；配对思路与配对服务端来自上游开源插件
@@ -32,10 +40,11 @@ Copy-Item . "$profile\node_modules\dsh-phone-pair-kit" -Recurse -Force
 # 然后编辑 $profile\package.json，把 "dsh-phone-pair-kit" 加进 dsh.profile.bundles 数组
 ```
 
-**B. 从市场装（给别人的一键路径）**
+**B. 从市场装（收录后）**
 
-把 `dsh-phone-pair-kit` 发布到 DSH 插件市场后，别人在设置 → 插件里点一下即可。
-发布需要你自己的市场账号，本仓库不代替你发布。
+本套件已向 DSH 插件市场（`awesome-dsh-plugin` 目录）投稿，材料见仓库的 `market/` 目录；
+**收录之后**在 设置 → 插件 里点一下即可。收录之前请用 A 或 C 方式安装 —— 并且别忘了
+先装上面那个手机端 App，否则电脑端装好了也没得配。
 
 **C. 从 GitHub 装**
 
@@ -51,7 +60,8 @@ pnpm add github:Zoragyx/dsh-phone-pair#path:plugin/dsh-phone-pair-kit
 
 ## 手机侧怎么用
 
-1. 手机装 `DSH 手机版 · 配对版`（`dsh-phone-pair-1.0.apk`，包名 `com.dsh.phone.pair`）。
+1. 手机装 `DSH 手机版 · 配对版`（[Releases](https://github.com/Zoragyx/dsh-phone-pair/releases/latest)
+   里的 `DSH-Phone-Pair-1.0.1.apk`，包名 `com.dsh.phone.pair`）。
 2. 电脑上打开「远程访问」→ 复制配对链接（形如 `https://<id>.dsh-market.com/pair-accept?pair=xxxx`）。
 3. 把链接发到手机，点开或在 App 的配对页粘贴，然后设置一个进入密码。
 4. 之后每次打开 App：先输密码 → 界面直接用本机缓存渲染，不用重新下载。
