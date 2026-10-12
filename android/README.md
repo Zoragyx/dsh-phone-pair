@@ -12,9 +12,9 @@
 | 项 | 值 |
 | --- | --- |
 | APK | `artifacts\dsh-phone-pair-1.0.apk` |
-| 大小 | 12,373,348 字节（约 11.8 MiB） |
-| SHA256 | `863F7B3175EE089FAE9FD358F1DA43E7181DF3311E727C922A24E58C8C3FAB76` |
-| 包名 / 版本 | `com.dsh.phone.pair` / versionCode 1、versionName 1.0 |
+| 大小 | 12,369,252 字节（约 11.8 MiB） |
+| SHA256 | `5690470F3668A2BDD85681CBFF12312BF000AFAEE55D7E82325AF04D76717B76` |
+| 包名 / 版本 | `com.dsh.phone.pair` / versionCode 2、versionName 1.0.1 |
 | 应用名 | `DSH 手机版 · 配对版` |
 | minSdk / targetSdk | 26 / 34 |
 | 权限 | 仅 `INTERNET`、`ACCESS_NETWORK_STATE` |
@@ -108,7 +108,7 @@ python tools\audit_pair_build.py --apk artifacts\dsh-phone-pair-1.0.apk        #
 `verify_pair_build.ps1` 默认整个流程都走本机 webserver（`-Base`，缺省 `http://127.0.0.1:19387`）：
 中继在重新注册固定域名时会丢长响应（HTTP 530 / 截断），拿它做 28 MB 的比对不可靠，而
 `AssetIndex.canonical()` 忽略 origin，所以本机取到的 URL 集合与手机实际请求的完全一致。
-本轮实测（当前成品 `863F7B31…FAB76`）：
+本轮实测（当前成品 `5690470F…7B76`）：
 
 | 检查 | 结果 |
 | --- | --- |
@@ -119,7 +119,7 @@ python tools\audit_pair_build.py --apk artifacts\dsh-phone-pair-1.0.apk        #
 | `pair_e2e.ps1` | 解析真实配对链接 `OK`；公网兑换 → `/pair-app?grant=…` 200 + 新 Cookie；该 Cookie 解锁 `/pair-app` 200；撤销后 `devices: 3 -> 3` |
 | `audit_pair_build.py` | `verdict : OK - no build-time credential or cookie inside the package` |
 | `tools\validate_kit.mjs` | `kit checks: passed=26 failed=0`（插件契约，含 js-yaml 严格解析 + `apply()` 健壮性） |
-| `aapt2 dump badging` | `package: name='com.dsh.phone.pair'`、versionCode 1 / versionName 1.0、label `DSH 手机版 · 配对版`、权限仅两项 |
+| `aapt2 dump badging` | `package: name='com.dsh.phone.pair'`、versionCode 2 / versionName 1.0.1、label `DSH 手机版 · 配对版`、权限仅两项 |
 | `zipalign -c -v 4` / `apksigner verify` | `Verification succesful` / 通过（同一把 `CN=DSH Phone`） |
 
 ## 文件
