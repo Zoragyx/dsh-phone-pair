@@ -2,15 +2,35 @@
   "name": "dsh-phone-pair-kit",
   "version": "1.0.0",
   "private": false,
-  "description": "Makes a DSH computer pairable with the DSH phone app: installs @linxin666/dsh-remote-web-ui with a Cloudflare quick tunnel and the fixed relay subdomain, so a phone can be paired once and then reconnect from anywhere.",
+  "description": "Makes a DSH computer pairable with a phone: installs @linxin666/dsh-remote-web-ui with a Cloudflare quick tunnel and the fixed relay subdomain, so the phone is paired once and then reconnects from anywhere. The phone half is a separate Android app and must be installed first - https://github.com/Zoragyx/dsh-phone-pair/releases - otherwise the computer side has nothing to pair with.",
   "type": "module",
   "main": "lib/index.js",
   "files": [
     "lib",
     "cordis.patch.yml",
-    "README.md"
+    "README.md",
+    "icon.png"
+  ],
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "dsh-bundle",
+    "deepseek-harness",
+    "remote",
+    "pairing",
+    "phone",
+    "android"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zoragyx/dsh-phone-pair.git",
+    "directory": "plugin/dsh-phone-pair-kit"
+  },
+  "homepage": "https://github.com/Zoragyx/dsh-phone-pair/tree/main/plugin/dsh-phone-pair-kit",
+  "bugs": {
+    "url": "https://github.com/Zoragyx/dsh-phone-pair/issues"
+  },
   "engines": {
     "node": "^22.19.0 || >=24.0.0"
   },
