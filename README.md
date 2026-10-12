@@ -8,6 +8,7 @@
 | --- | --- | --- |
 | 📱 手机 App（APK） | 本仓库的 [Releases](../../releases) | 通用配对版：**不含任何凭据、不含任何电脑地址**，可以随便转发；每个人装完后配对自己电脑即可 |
 | 🔌 配套插件 | [`plugin/dsh-phone-pair-kit`](plugin/dsh-phone-pair-kit) | 可选。装上后自动把「远程访问插件」按 `autoTunnel + relay` 打开，省掉手动开关 |
+| 🎬 讲解视频（声明 + 时间节点 + 6 集） | 同一个 [Releases](../../releases) 页，也在 [B 站](https://www.bilibili.com/video/BV1RCpE6NEwu) | 中文配音 + 中文字幕，一支 8 分 13 秒的完整片：开头是使用声明与两个动手安装的时间节点，随后从下载安装讲到电脑关机之后 |
 
 App 的安卓侧源码、构建脚本与验证工具在 [`android/`](android)；那里还有一份更详细的工程说明
 （[`android/README.md`](android/README.md)）。
@@ -18,9 +19,9 @@ App 的安卓侧源码、构建脚本与验证工具在 [`android/`](android)；
 
 ### 下载
 
-到 [Releases](../../releases) 下载 `DSH-Phone-Pair-1.0.apk`（12,373,348 字节 / 约 11.8 MiB）。
+到 [Releases](../../releases) 下载 `DSH-Phone-Pair-1.0.1.apk`（12,369,252 字节 / 约 11.8 MiB）。
 
-- SHA256：`863F7B3175EE089FAE9FD358F1DA43E7181DF3311E727C922A24E58C8C3FAB76`
+- SHA256：`5690470F3668A2BDD85681CBFF12312BF000AFAEE55D7E82325AF04D76717B76`
 - 包名 `com.dsh.phone.pair`，应用名「DSH 手机版 · 配对版」，versionName 1.0
 - minSdk 26（Android 8.0）· targetSdk 34 · 权限只有 `INTERNET` 与 `ACCESS_NETWORK_STATE`
 - 签名证书 SHA-256：`b9204950d591bb3329ec137180673a98e2899e32fff91f23889585cc78ec1a0f`
@@ -59,9 +60,38 @@ App 的安卓侧源码、构建脚本与验证工具在 [`android/`](android)；
 
 更多面向使用者的说明（含常见问题表）见 [`HANDOFF.md`](HANDOFF.md)。
 
+### 配套讲解视频
+
+[Releases](../../releases) 页上有**一支完整的中文讲解视频**（配音 + 烧录字幕，**8 分 13 秒**，另附 `.srt`）；
+也可以在 B 站看：[BV1RCpE6NEwu](https://www.bilibili.com/video/BV1RCpE6NEwu)。
+开头是使用声明，接着一页「两个动手安装的时间点」（电脑端 `01:49`、手机端 `03:08`，可以直接拖进度条跳过去），
+然后是 6 集讲解（每集 1~1.5 分钟，也可以单独下载）。
+**使用声明**：作者近期学业繁忙、暂时抽不出时间继续做更多调试与答疑；使用中遇到问题，
+请把问题直接交给 DSH（你电脑上的这个助手）排查，确需作者出面的再在仓库里留 Issue。
+
+| 段 | 内容 |
+| --- | --- |
+| 声明 | 作者近期学业繁忙、暂时无法继续调试；有问题请交给 DSH |
+| 时间节点 | 两个动手安装的时间点：电脑端 01:49、手机端 03:08 |
+| 1 | 这是什么、能做什么、做不到什么 |
+| 2 | 电脑端准备：装插件、打开「远程访问」面板 |
+| 3 | 手机端下载与安装、设置第一个密码 |
+| 4 | 首次配对：把链接发到手机、粘贴、失败排查 |
+| 5 | 日常使用与安全：每次上锁、设置菜单、安全边界 |
+| 6 | 电脑关机/睡眠/退出 DSH 之后会怎样 |
+
+生成这些视频的脚本（分镜、旁白、排版、配音流水线）都在 [`video/`](video)，可以按
+[`video/README.md`](video/README.md) 自己重出片；画面里的手机与电脑界面是示意图（视频内有角标说明）。
+
 ---
 
 ## 二、配套插件 `dsh-phone-pair-kit`
+
+> ⚠️ **插件只是「电脑那一半」——请先按 §一 在手机上装好 APK。** 只装插件、没有手机端 App，
+> 是没有任何东西可以配对的。这句话在插件自己的 README 顶部、以及 DSH 插件市场的条目简介里都写了。
+
+本插件的投稿材料在 [`market/`](market/README.md)；向 DSH 插件市场（`awesome-dsh-plugin` 目录）投稿后，
+别人就能在「设置 → 插件」里直接搜到并一键安装。
 
 它做的事只有一件：把远程访问插件按
 
