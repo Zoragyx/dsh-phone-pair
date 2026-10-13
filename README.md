@@ -19,9 +19,9 @@ App 的安卓侧源码、构建脚本与验证工具在 [`android/`](android)；
 
 ### 下载
 
-到 [Releases](../../releases) 下载 `DSH-Phone-Pair-1.0.1.apk`（12,369,252 字节 / 约 11.8 MiB）。
+到 [Releases](../../releases) 下载 `DSH-Phone-Pair-1.0.2.apk`（12,373,348 字节 / 约 11.8 MiB）。
 
-- SHA256：`5690470F3668A2BDD85681CBFF12312BF000AFAEE55D7E82325AF04D76717B76`
+- SHA256：`3614516B4F1CEECC50B081E4CDA5440707689B4FA737A51E8461500A6BDD80B0`
 - 包名 `com.dsh.phone.pair`，应用名「DSH 手机版 · 配对版」，versionName 1.0
 - minSdk 26（Android 8.0）· targetSdk 34 · 权限只有 `INTERNET` 与 `ACCESS_NETWORK_STATE`
 - 签名证书 SHA-256：`b9204950d591bb3329ec137180673a98e2899e32fff91f23889585cc78ec1a0f`
