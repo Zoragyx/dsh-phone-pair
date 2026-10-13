@@ -25,7 +25,17 @@ Say ""
 Say "--- 1) DSH Web 是否在监听 19387 ---"
 $listens = Get-NetTCPConnection -LocalPort 19387 -State Listen -ErrorAction SilentlyContinue
 if (-not $listens) {
-  Say "[X] 没有进程监听 19387 —— DSH 没在跑（先启动 dsh web / 桌面 App）"
+  Say "[X] 没有进程监听 19387 —— 此刻 DSH 没在跑，或者它换了端口"
+  Say "    >>> 请先打开 DSH 桌面 App（面板里能看到二维码），再重新跑一次本脚本 <<<"
+  $procs = Get-Process -ErrorAction SilentlyContinue | Where-Object { $_.ProcessName -match '(?i)dsh|electron|cloudflared' }
+  if ($procs) {
+    Say "    不过发现了这些相关进程（DSH 可能开着，只是端口不同）："
+    foreach ($p in ($procs | Select-Object -First 8)) { Say ("      {0}  pid={1}" -f $p.ProcessName, $p.Id) }
+    $ports = Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue | Where-Object { $procs.Id -contains $_.OwningProcess }
+    foreach ($lp in ($ports | Select-Object -First 12)) { Say ("      监听 {0}:{1}  pid={2}" -f $lp.LocalAddress, $lp.LocalPort, $lp.OwningProcess) }
+  } else {
+    Say "    也没有 dsh / electron / cloudflared 进程 —— 这台电脑上确实没在跑 DSH。"
+  }
 } else {
   foreach ($l in $listens) { Say "[OK] 监听 $($l.LocalAddress):$($l.LocalPort)  pid=$($l.OwningProcess)" }
   if (-not ($listens | Where-Object { $_.LocalAddress -eq '0.0.0.0' -or $_.LocalAddress -eq '::' })) {
@@ -44,13 +54,21 @@ Get-NetIPAddress -AddressFamily IPv4 -ErrorAction SilentlyContinue |
     if ($ip -like '192.168.*' -or $ip -like '10.*' -or $ip -match '^172\.(1[6-9]|2\d|3[01])\.') {
       $note = '<= 手机连同一 Wi-Fi 时用这条'
     } elseif ($ip -match '^100\.(6[4-9]|[7-9]\d|1[01]\d|12[0-7])\.') {
-      $note = '<= Tailscale 地址：手机也必须装 Tailscale 并登同一账号'
+      if ($_.InterfaceAlias -match '(?i)tailscale') {
+        $note = '<= Tailscale 地址：手机也必须装 Tailscale 并登同一账号'
+      } else {
+        $note = '<= 100.64/10（CGNAT 段，挂在 Wi-Fi 网卡上）：手机连同一 Wi-Fi 时用它，手机不在同一网络就用不了'
+      }
     } elseif ($ip -like '169.254.*') {
       $note = '<= 链路本地，别用'
     } else { $note = '' }
     if ($ip -notlike '169.254.*') { $script:myIps += $ip }
     Say ("  {0,-16} {1,-28} {2}" -f $ip, $_.InterfaceAlias, $note)
   }
+if (-not ($script:myIps | Where-Object { $_ -match '^(192\.168\.|10\.|172\.(1[6-9]|2\d|3[01])\.)' })) {
+  Say "  [!] 本机没有普通的 192.168.x / 10.x 内网地址 —— 局域网那条只能是上面 100.x 那条，"
+  Say "      手机必须处在同一个 100.x 网络（同一 Wi-Fi 或同一 Tailscale 网络）才连得上。"
+}
 
 Say ""
 Say "--- 3) Windows 防火墙有没有放行 19387 ---"
@@ -83,10 +101,30 @@ foreach ($v in @('HTTPS_PROXY', 'https_proxy', 'HTTP_PROXY', 'http_proxy', 'NO_P
 }
 
 Say ""
-Say "--- 6) 能不能连到中继 dsh-market.com（123 = 正常响应）---"
-Say ("  直连（忽略代理）  http={0}" -f (HttpCode 'https://dsh-market.com/' $false))
+Say "--- 6) 中继与固定域名 ---"
+Say ("  连 dsh-market.com  直连 http={0}" -f (HttpCode 'https://dsh-market.com/' $false))
 if ([Environment]::GetEnvironmentVariable('HTTPS_PROXY')) {
-  Say ("  走 HTTPS_PROXY    http={0}" -f (HttpCode 'https://dsh-market.com/' $true))
+  Say ("  连 dsh-market.com  走代理 http={0}" -f (HttpCode 'https://dsh-market.com/' $true))
+}
+$relayId = $null
+$idFile = Join-Path $env:USERPROFILE '.dsh\remote-web-ui-registry\desktop.json'
+if (Test-Path $idFile) {
+  $m = [regex]::Match((Get-Content $idFile -Raw), '"id"\s*:\s*"([^"]+)"')
+  if ($m.Success) { $relayId = $m.Groups[1].Value }
+}
+if ($relayId) {
+  Say ("  中继身份 id = {0}  ->  公开地址 https://{0}.dsh-market.com/" -f $relayId)
+  $pub = HttpCode ("https://{0}.dsh-market.com/" -f $relayId) $false
+  Say ("  连这个公开地址  直连 http={0}" -f $pub)
+  if ($pub -eq '000') {
+    Say "    [X] 连不上：说明这台电脑的隧道没登记成功（面板顶部多半是红字「固定域名同步失败」）"
+  } elseif ($pub -eq '404') {
+    Say "    [!] 404：中继收到了，但没找到你这条隧道（多半是 DSH 没在跑，或隧道刚重启）"
+  } else {
+    Say ("    [OK] http={0}：中继这条是通的（401/302 都算正常），手机应该能用 https 那条" -f $pub)
+  }
+} else {
+  Say "  [X] 还没有中继身份文件 —— 插件从没成功登记过，面板只会给局域网 http 地址"
 }
 
 Say ""
@@ -98,7 +136,7 @@ if (Test-Path $patch) {
     $hit = ($txt -split "`n") | Where-Object { $_ -match [regex]::Escape($key) } | Select-Object -First 2
     foreach ($h in $hit) { Say ("  patch> {0}" -f $h.Trim()) }
   }
-  if ($txt -notmatch 'id:\s*remote-web-ui') { Say "  [!] patch 里没有 remote-web-ui 条目（远程访问插件没启用）" }
+  if ($txt -notmatch 'remote-web-ui' -and $txt -notmatch 'linxin666') { Say "  [!] patch 里没看到 remote-web-ui / linxin666 —— 远程访问插件可能没启用" }
 } else {
   Say "  [X] 没找到 $patch"
 }
