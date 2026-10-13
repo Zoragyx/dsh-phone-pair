@@ -13,8 +13,8 @@
 | --- | --- |
 | APK | `artifacts\dsh-phone-pair-1.0.apk` |
 | 大小 | 12,373,348 字节（约 11.8 MiB） |
-| SHA256 | `3614516B4F1CEECC50B081E4CDA5440707689B4FA737A51E8461500A6BDD80B0` |
-| 包名 / 版本 | `com.dsh.phone.pair` / versionCode 3、versionName 1.0.2 |
+| SHA256 | `60875A94160F3F736F5CAB1E829964D29BA0DF099FA221D3282576B2604D2CEB` |
+| 包名 / 版本 | `com.dsh.phone.pair` / versionCode 4、versionName 1.0.3 |
 | 应用名 | `DSH 手机版 · 配对版` |
 | minSdk / targetSdk | 26 / 34 |
 | 权限 | 仅 `INTERNET`、`ACCESS_NETWORK_STATE` |
@@ -40,7 +40,8 @@
 | --- | --- | --- |
 | App 里粘贴后提示「链接被截断了（结尾是省略号 …）」 | 复制了面板上被 CSS 省略号截断的**可见文字** | 别用鼠标/长按选文字，点面板的『**复制链接**』按钮复制整条 |
 | 提示「这是『配对令牌』，不是配对链接」 | 点了『复制令牌』（那是给 Docker/反向代理环境用的裸令牌） | 改点『复制链接』 |
-| 提示「这是局域网地址（http://…）」 | 面板回退到局域网地址（仅同一 WiFi 且电脑允许局域网访问时才可用；本 App 只走 https） | 面板里把网络切回「公网地址」再复制；或确认手机与电脑在同一 WiFi |
+| 粘 `http://192.168…` 的局域网链接配不上 | 1.0.2 及更早只认 `https://`；**1.0.3 起接受内网地址的 http**（面板的「局域网地址」模式），公网域名的 http 仍然拒绝 | 升级到 1.0.3；局域网模式要求手机与电脑在**同一网络**（含同一 Tailscale 网络）。要走公网就点面板的「公网地址」再复制 |
+| 想让测试员自己按步骤查 | 配对失败的原因分散在手机端、面板、本机代理三处 | 见 [`tester-troubleshooting.md`](../tester-troubleshooting.md)：版本 → 面板状态 → 局域网直连 → 修中继 → 浏览器确认，一步步来 |
 | 面板顶部红字「固定域名同步失败」、地址变成 `*.trycloudflare.com` | 插件连不上 `dsh-market.com`：最常见是本机 `HTTPS_PROXY` 指向一个没在运行的代理（例如 Clash 没启动），插件的 fetch 直接失败 | 启动代理软件；或给 `NO_PROXY` 加上 `dsh-market.com,.dsh-market.com`；或清掉用户级 `HTTPS_PROXY`。修好后点面板「刷新二维码」，固定域名会自己回来 |
 | 手机浏览器点「继续」时提示「暂时无法保存确认状态，请重试」 | 这是 DSH 自己的「预览版说明」弹窗要把"已确认"写回电脑，而浏览器没带上配对 Cookie（微信/QQ 内置浏览器、无痕、手输地址都会这样） | 从聊天里**点开**链接（别手输、别存书签再打开），用系统 Chrome/Edge，关掉无痕与"阻止第三方 Cookie"；或者直接用本 App——设备凭据存在 App 自己这边，不依赖浏览器 Cookie |
 
@@ -118,7 +119,7 @@ python tools\audit_pair_build.py --apk artifacts\dsh-phone-pair-1.0.apk        #
 `verify_pair_build.ps1` 默认整个流程都走本机 webserver（`-Base`，缺省 `http://127.0.0.1:19387`）：
 中继在重新注册固定域名时会丢长响应（HTTP 530 / 截断），拿它做 28 MB 的比对不可靠，而
 `AssetIndex.canonical()` 忽略 origin，所以本机取到的 URL 集合与手机实际请求的完全一致。
-本轮实测（当前成品 `3614516B…80B0`）：
+本轮实测（当前成品 `60875A94…2CEB`）：
 
 | 检查 | 结果 |
 | --- | --- |
@@ -129,7 +130,7 @@ python tools\audit_pair_build.py --apk artifacts\dsh-phone-pair-1.0.apk        #
 | `pair_e2e.ps1` | 解析真实配对链接 `OK`；公网兑换 → `/pair-app?grant=…` 200 + 新 Cookie；该 Cookie 解锁 `/pair-app` 200；撤销后 `devices: 3 -> 3` |
 | `audit_pair_build.py` | `verdict : OK - no build-time credential or cookie inside the package` |
 | `tools\validate_kit.mjs` | `kit checks: passed=26 failed=0`（插件契约，含 js-yaml 严格解析 + `apply()` 健壮性） |
-| `aapt2 dump badging` | `package: name='com.dsh.phone.pair'`、versionCode 3 / versionName 1.0.2、label `DSH 手机版 · 配对版`、权限仅两项 |
+| `aapt2 dump badging` | `package: name='com.dsh.phone.pair'`、versionCode 4 / versionName 1.0.3、label `DSH 手机版 · 配对版`、权限仅两项 |
 | `zipalign -c -v 4` / `apksigner verify` | `Verification succesful` / 通过（同一把 `CN=DSH Phone`） |
 
 ## 文件
