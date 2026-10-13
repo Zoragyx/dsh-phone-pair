@@ -5,7 +5,7 @@
 > ### ⚠️ 先装手机端 App，否则这个插件没法用
 >
 > 本套件只是**电脑那一半**。手机那一半是一个单独的 Android App，请先下载安装：
-> **[Releases → DSH-Phone-Pair-1.0.2.apk](https://github.com/Zoragyx/dsh-phone-pair/releases/latest)**
+> **[Releases → DSH-Phone-Pair-1.0.3.apk](https://github.com/Zoragyx/dsh-phone-pair/releases/latest)**
 > （包名 `com.dsh.phone.pair`）。只装电脑端、没有手机端，是**没有任何东西可以配对的**。
 
 让**这台电脑**变成可被手机配对的 DSH 主机 —— 也就是 `DSH 手机版 · 配对版` App 的服务端那一半。
@@ -61,7 +61,7 @@ pnpm add github:Zoragyx/dsh-phone-pair#path:plugin/dsh-phone-pair-kit
 ## 手机侧怎么用
 
 1. 手机装 `DSH 手机版 · 配对版`（[Releases](https://github.com/Zoragyx/dsh-phone-pair/releases/latest)
-   里的 `DSH-Phone-Pair-1.0.2.apk`，包名 `com.dsh.phone.pair`）。
+   里的 `DSH-Phone-Pair-1.0.3.apk`，包名 `com.dsh.phone.pair`）。
 2. 电脑上打开「远程访问」→ 复制配对链接（形如 `https://<id>.dsh-market.com/pair-accept?pair=xxxx`）。
 3. 把链接发到手机，点开或在 App 的配对页粘贴，然后设置一个进入密码。
 4. 之后每次打开 App：先输密码 → 界面直接用本机缓存渲染，不用重新下载。
@@ -98,7 +98,7 @@ pnpm add github:Zoragyx/dsh-phone-pair#path:plugin/dsh-phone-pair-kit
 | 手机上白屏很久 | 首次要把约 10 MB 客户端拉下来（配对版已经把 28 MB 资源内置，正常不会遇到） |
 | 面板顶部红字「固定域名同步失败」，二维码变成 `*.trycloudflare.com` | 插件连不上 `dsh-market.com`：本机 `HTTPS_PROXY` 指向一个没在运行的代理（例如 Clash 没启动）时 fetch 直接失败。启动代理软件，或给 `NO_PROXY` 加 `dsh-market.com,.dsh-market.com`，或清掉 `HTTPS_PROXY`；然后点面板「刷新二维码」 |
 | 手机上粘贴链接后提示「输入完整的链接」/「链接被截断」 | 复制了面板上被省略号截断的**可见文字**，或误点『复制令牌』（那是给 Docker/反向代理环境用的裸令牌）。改点『**复制链接**』整条发送；App ≥ 1.0.2 会把具体原因讲清楚 |
-| 手机上粘的是 `http://192.168…` 却配不上 | 那是面板回退的局域网地址（配对版 App 只接受 https）。面板里切回「公网地址」再复制；或确认手机与电脑在同一 WiFi |
+| 手机上粘的是 `http://192.168…` 却配不上 | 1.0.2 及更早的 App 只接受 https；**1.0.3 起内网地址的 http 可以直接配对**（手机与电脑要在同一网络/同一 Tailscale 网络）。公网域名的 http 仍会被拒，改用面板的「公网地址」 |
 | 手机浏览器点「继续」提示「暂时无法保存确认状态，请重试」 | 这是 DSH 自己的「预览版说明」要把确认状态写回电脑，而浏览器没带上配对 Cookie。从聊天里**点开**链接（别手输/别存书签）、用系统 Chrome/Edge（别用微信内置浏览器、别开无痕、别阻止第三方 Cookie），或直接用配对版 App |
 
 ## 卸载
