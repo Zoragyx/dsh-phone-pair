@@ -8,6 +8,17 @@
 > **[Releases → DSH-Phone-Pair-1.0.3.apk](https://github.com/Zoragyx/dsh-phone-pair/releases/latest)**
 > （包名 `com.dsh.phone.pair`）。只装电脑端、没有手机端，是**没有任何东西可以配对的**。
 
+> ### 🧪 请把它当成「公开自测版」
+>
+> 这套东西横跨手机 App、Cloudflare 隧道、固定域名中继、系统代理、各种 Android 版本和浏览器内核，
+> 其中相当一部分 bug 作者**在自己的机器上复刻不出来**，也就无从定位、无从修复。所以：
+>
+> - 遇到问题先按下面「排错」表自查一遍，那几条覆盖了目前已知的绝大多数坑；
+> - 自查无果就是真 bug 了，请在 [Issues](https://github.com/Zoragyx/dsh-phone-pair/issues) 里报，并附上：
+>   系统版本、DSH 版本、App 版本、`GET /api/pair/status` 返回的 `tunnel.state` 与 `relay.state`、
+>   以及完整报错文字（截图也行）；
+> - 你提供的复现信息往往就是修它的唯一线索 —— 只写「用不了」的话，这边大概率还是修不了。
+
 让**这台电脑**变成可被手机配对的 DSH 主机 —— 也就是 `DSH 手机版 · 配对版` App 的服务端那一半。
 
 > **灵感来源与致谢**：本套件只做「插入一段配置、把开关打开」这一件事；配对思路与配对服务端来自上游开源插件
@@ -40,11 +51,13 @@ Copy-Item . "$profile\node_modules\dsh-phone-pair-kit" -Recurse -Force
 # 然后编辑 $profile\package.json，把 "dsh-phone-pair-kit" 加进 dsh.profile.bundles 数组
 ```
 
-**B. 从市场装（收录后）**
+**B. 从市场装（推荐）**
 
-本套件已向 DSH 插件市场（`awesome-dsh-plugin` 目录）投稿，材料见仓库的 `market/` 目录；
-**收录之后**在 设置 → 插件 里点一下即可。收录之前请用 A 或 C 方式安装 —— 并且别忘了
-先装上面那个手机端 App，否则电脑端装好了也没得配。
+本套件已于 **2026-10-15** 收录进 DSH 插件市场（`awesome-dsh-plugin` 目录），
+市场页面：[awesome-dsh-plugin.com/p/Zoragyx/dsh-phone-pair--plugin-dsh-phone-pair-kit](https://awesome-dsh-plugin.com/p/Zoragyx/dsh-phone-pair--plugin-dsh-phone-pair-kit/)。
+打开 **设置 → 插件**，搜 `dsh-phone-pair` 点安装即可，也可以直接复制市场页面给出的安装命令。
+投稿材料保留在仓库的 `market/` 目录里，供溯源用。别忘了先装上面那个手机端 App，
+否则电脑端装好了也没得配。
 
 **C. 从 GitHub 装**
 
