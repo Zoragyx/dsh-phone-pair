@@ -4,6 +4,11 @@
 
 Writes out/封面-1920x1080.png and out/封面-1146x717.png (the size the
 Bilibili submission form asks for).
+
+审核规则：**封面上不放二维码、网址、联系方式，也不做站外引导**（B 站封面最
+常见的打回原因就是这几样）。所以这一版把原来左下角的「扫码下载 APK + GitHub
+地址」整块拿掉，换成纯画面内容：三步流程图 + 一句时长说明。下载入口只放在
+简介和置顶评论里（见 out/bilibili-投稿信息.md）。
 """
 
 from __future__ import annotations
@@ -17,7 +22,6 @@ sys.path.insert(0, str(VIDEO / "scripts"))
 
 from PIL import Image  # noqa: E402
 
-import storyboard as S  # noqa: E402
 import theme as T  # noqa: E402
 
 OUT = VIDEO / "out"
@@ -56,6 +60,25 @@ def screen(draw, rect) -> None:
               font=T.font(int(w * 0.058)), fill=T.INK_DIM)
 
 
+def steps_row(img: Image.Image, xy: tuple[int, int], items: list[str],
+              size: int = 42, gap: int = 48) -> int:
+    """Chips joined by arrows — the bottom-left "三步" graphic (no text links)."""
+    draw = T.draw_rgba(img)
+    fnt = T.font(size, True)
+    x, y = xy
+    h = size + 46
+    for i, text in enumerate(items):
+        w = int(fnt.getlength(text)) + 52
+        draw.rounded_rectangle((x, y, x + w, y + h), radius=h // 2,
+                               fill=T.ACCENT_DARK, outline=T.ACCENT, width=3)
+        draw.text((x + w / 2, y + h / 2), text, font=fnt, fill=T.INK, anchor="mm")
+        x += w
+        if i < len(items) - 1:
+            T.arrow(img, (x + 10, y + h // 2), (x + gap - 10, y + h // 2), width=6)
+            x += gap
+    return y + h
+
+
 def main() -> int:
     img = T.gradient_canvas()
     draw = T.draw_rgba(img)
@@ -76,19 +99,13 @@ def main() -> int:
         T.check_row(img, (112, y), text, ok=ok, size=48)
         y += 84
 
-    qr_box = (112, 780, 342, 1010)
-    T.card(img, qr_box, radius=22, fill=(255, 255, 255))
-    qr = T.real_qr(S.DOWNLOAD_PAGE, 196)
-    if qr is not None:
-        img.paste(qr, (int((qr_box[0] + qr_box[2]) / 2 - 98),
-                       int((qr_box[1] + qr_box[3]) / 2 - 98)))
-    draw.text((376, 812), "扫码下载 APK", font=T.font(52, True), fill=T.INK)
-    draw.text((378, 886), "github.com/Zoragyx/dsh-phone-pair", font=T.font(32),
-              fill=T.INK_DIM)
-    draw.text((378, 936), "releases/latest", font=T.font(32), fill=T.INK_DIM)
+    draw.text((112, 752), "三步搞定", font=T.font(34, True), fill=T.AMBER)
+    steps_row(img, (112, 818), ["装插件", "装 App", "配对成功"])
+    draw.text((112, 952), "全程中文讲解 · 6 集 · 约 8 分钟",
+              font=T.font(32), fill=T.INK_DIM)
 
     T.phone_mock(img, (1236, 150, 1694, 1006), screen)
-    T.sketch_badge(img, (1236, 1040))
+    T.sketch_badge(img, (1236, 1016))
 
     OUT.mkdir(parents=True, exist_ok=True)
     wide = OUT / "封面-1920x1080.png"
