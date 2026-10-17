@@ -44,7 +44,7 @@ video/
   scripts/build.py        流水线：渲染帧 → 合成配音 → 回填时间节点 → 每幕编码 → 拼接
   scripts/make_srt.py     从 work/manifest.json 生成每集与合辑的 .srt 字幕
   scripts/check_chapters.py  核对成片里的时间节点数字（抽帧比对）
-  scripts/make_cover.py  生成投稿封面（1146x717 + 1920x1080）
+  scripts/make_cover.py  生成投稿封面（1146x717 + 1920x1080；封面不放二维码/网址）
   scripts/bili_login_tv.py   B 站 TV 端扫码登录 → 写 biliup 用的 cookies.json
   scripts/bili_whoami.py     核对登录的是哪个账号
   scripts/bili_watch_audit.py  盯稿件审核状态（通过/打回就退出）
@@ -108,10 +108,11 @@ biliup.exe -u C:\Users\Zora\.dsh\biliup\cookies.json upload --submit app `
   --cover "out\封面-1146x717.png" "out\dsh-phone-pair-完整版.mp4"
 ```
 
-三个坑：biliup v0.2.4 没有网页投稿通道（`--submit web` 会被降级成 APP 接口，所以 cookies.json
+四个坑：biliup v0.2.4 没有网页投稿通道（`--submit web` 会被降级成 APP 接口，所以 cookies.json
 必须有 TV 端登录拿到的 `token_info.access_token`，纯网页扫码的 cookie 它连解析都过不了）；
 `--tid` 默认 `171` 是电子竞技，不填会投错分区；中文参数给 Rust 程序没问题，但
-**按 ANSI 读参数的程序（ffprobe 等）会乱码**。
+**按 ANSI 读参数的程序（ffprobe 等）会乱码**。第四个是封面：**不能带二维码、网址、联系方式，也不写「扫码下载」**——
+B 站封面最常见的打回原因就是这几样，下载入口只放简介正文和置顶评论（`out/封面-1146x717.png` 已按这条重画）。
 
 ## 外部依赖
 
