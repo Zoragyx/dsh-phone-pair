@@ -13,6 +13,14 @@
 App 的安卓侧源码、构建脚本与验证工具在 [`android/`](android)；那里还有一份更详细的工程说明
 （[`android/README.md`](android/README.md)）。
 
+> **先说清一件事：这里一定还有 bug，而且有些作者修不了。**
+> 手机型号、Android 版本、代理软件、路由器、隧道状态……组合太多，一部分问题在这台电脑上
+> **复现不出来**，也就无从定位、无从修复。所以它现在是「能用，但请当自测版用」：
+> 遇到问题先按 [`tester-troubleshooting.md`](tester-troubleshooting.md) 和插件 README 的「排错」表
+> 自查一遍；仍然不行，就在 [Issues](https://github.com/Zoragyx/dsh-phone-pair/issues) 里报，请附上系统版本、DSH 版本、App 版本、
+> `GET /api/pair/status` 里的 `tunnel.state` 与 `relay.state`、以及完整报错文字（截图也行）。
+> 这些复现信息往往就是修掉它的唯一线索——只写「用不了」，这边大概率还是修不了。
+
 ---
 
 ## 一、手机 App
@@ -90,8 +98,10 @@ App 的安卓侧源码、构建脚本与验证工具在 [`android/`](android)；
 > ⚠️ **插件只是「电脑那一半」——请先按 §一 在手机上装好 APK。** 只装插件、没有手机端 App，
 > 是没有任何东西可以配对的。这句话在插件自己的 README 顶部、以及 DSH 插件市场的条目简介里都写了。
 
-本插件的投稿材料在 [`market/`](market/README.md)；向 DSH 插件市场（`awesome-dsh-plugin` 目录）投稿后，
-别人就能在「设置 → 插件」里直接搜到并一键安装。
+本插件**已在 2026-10-15 收录进 DSH 插件市场**（`awesome-dsh-plugin` 目录，PR
+[#7205](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin/pull/7205) 已合并）：
+打开「设置 → 插件」搜 `dsh-phone-pair` 就能一键安装，也可以直接用市场页给出的命令。
+投稿材料与复核流程保留在 [`market/`](market/README.md)。
 
 它做的事只有一件：把远程访问插件按
 
