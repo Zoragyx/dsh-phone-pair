@@ -47,11 +47,12 @@
    python tools\upload_asset.py --token-file C:\Users\Zora\.dsh\github-token.txt --file dist\dsh-phone-pair-kit.tgz
    ```
 
-   期望：`asset uploaded : dsh-phone-pair-kit.tgz (29927 bytes)` 与 `state : uploaded`；
+   期望：`asset uploaded : dsh-phone-pair-kit.tgz (30469 bytes)` 与 `state : uploaded`；
    然后确认 <https://github.com/Zoragyx/dsh-phone-pair/releases/latest/download/dsh-phone-pair-kit.tgz> 是 200。
    ⚠️ **不变量**：以后每次发新 Release，都要用同一个命令把 `dist\dsh-phone-pair-kit.tgz` 重新挂上去，
    否则 `latest/download/` 会 404。tarball 由 `cd plugin\dsh-phone-pair-kit; npm.cmd pack` 生成
-   （当前 29 927 字节，SHA256 `CCEC39E6D804482E1C8BC303CBEB13B0D7467AF0FF6871BF1BECC215C24B6663`）；
+   （v1.0.3 当前是 30 469 字节，SHA256 `4CB0752766640EECD3BDCC54CB3CF86D34DA61F161C8C111BE049EA26B0118BA`；
+   旧的 29 927 字节 / `CCEC39E6…` 是 v1.0.1 的，别再拿它对）；
    改过插件内容就要重新 pack 覆盖 `dist\dsh-phone-pair-kit.tgz`。
 3. **先推仓库更新**，再提 PR（市场详情页渲染插件 README，评审点进去要能立刻看到「先装手机端 App」）：
 
